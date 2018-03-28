@@ -1,5 +1,7 @@
 import assign from 'assign-deep';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   StatusBar,
   StyleSheet,
@@ -57,50 +59,46 @@ const defaulStyles = {
   },
   dotStyle: {
     backgroundColor: 'rgba(255,255,255,.3)',
-    width: 13,
-    height: 13,
-    borderRadius: 7,
-    marginLeft: 7,
-    marginRight: 7,
-    marginTop: 7,
-    marginBottom: 7,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 8,
+    marginRight: 8,
   },
   activeDotStyle: {
     backgroundColor: '#fff',
   },
   paginationContainer: {
     position: 'absolute',
-    bottom: 25,
+    bottom: 32,
     left: 0,
     right: 0,
     flexDirection: 'row',
     flex: 1,
-    justifyContent: 'center',
+    height: 44,
+    marginLeft: 32,
+    marginRight: 16,
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
   dotContainer: {
-    flex: 0.6,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   btnContainer: {
-    flex: 0.2,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 50,
+    height: 44,
+    width: 152,
+    borderRadius: 8,
+    backgroundColor: '#00FF7B'
   },
   nextButtonText: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    fontFamily: 'Arial',
-  },
-  full: {
-    height: 80,
-    width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontSize: 20,
+    lineHeight: 26,
+    fontFamily: 'avenir-next-bold',
+    color: '#090923'
   },
 }
 
@@ -204,27 +202,19 @@ export default class AppIntro extends Component {
     }
     return (
       <View style={[this.styles.paginationContainer]}>
-        {this.props.showSkipButton ? <SkipButton
-          {...this.props}
-          {...this.state}
-          isSkipBtnShow={isSkipBtnShow}
-          styles={this.styles}
-          onSkipBtnClick={() => this.props.onSkipBtnClick(index)} /> :
-          <View style={this.styles.btnContainer} />
-        }
-        {this.props.showDots && RenderDots(index, total, {
-          ...this.props,
-          styles: this.styles
-        })}
-        {this.props.showDoneButton ? <DoneButton
-            {...this.props}
-            {...this.state}
-            isDoneBtnShow={isDoneBtnShow}
-            styles={this.styles}
-            onNextBtnClick={this.onNextBtnClick.bind(this, context)}
-            onDoneBtnClick={this.props.onDoneBtnClick} /> :
-            <View style={this.styles.btnContainer} />
-          }
+        <View style={{flexDirection: 'row'}}>
+          {this.props.showDots && RenderDots(index, total, {
+            ...this.props,
+            styles: this.styles
+          })}
+        </View>
+        <TouchableOpacity onPress={ isDoneBtnShow ? this.props.onDoneBtnClick : this.onNextBtnClick.bind(this, context) }>
+          <View style={[this.styles.btnContainer]}>
+            <Text style={[this.styles.nextButtonText]}>
+              {isDoneBtnShow ? this.props.doneBtnLabel : this.props.nextBtnLabel}
+             </Text>
+           </View>
+        </TouchableOpacity>
       </View>
     );
   }
